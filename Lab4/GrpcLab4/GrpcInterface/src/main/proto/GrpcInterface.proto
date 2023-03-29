@@ -1,0 +1,69 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_outer_classname = "GrpcAppProto";
+option objc_class_prefix = "GAP";
+// The service definition.
+service ItemService {
+  // Remote procedures:
+
+  rpc fileSendProcedure (FileSendRequest) returns (stream FileSendResponse) {}
+
+  rpc itemUploadProcedure (stream ItemUploadRequest) returns (ItemUploadResponse) {}
+
+  rpc itemPictureDownloadProcedure (ItemPictureDownloadRequest) returns (stream ItemPictureDownloadResponse) {}
+
+  rpc itemReadProcedure (ItemReadRequest) returns (ItemReadResponse) {}
+
+  rpc itemsReadProcedure (EmptyMessage) returns (stream ItemReadResponse) {}
+
+  rpc itemDeleteProcedure (ItemReadRequest) returns (EmptyMessage) {}
+}
+
+message ItemUploadRequest {
+  oneof request {
+    Item item = 1;
+    bytes picture = 2;
+  }
+}
+
+message ItemUploadResponse {
+  string pesel = 1;
+  string message = 2;
+}
+
+message ItemPictureDownloadRequest {
+  string pesel = 1;
+}
+
+message ItemPictureDownloadResponse {
+  bytes picture = 1;
+  string fileName = 2;
+  string message = 3;
+}
+
+message ItemReadRequest {
+  string pesel = 1;
+}
+
+message ItemReadResponse {
+  Item item = 1;
+}
+
+message EmptyMessage {
+}
+
+message Item {
+  string pesel = 1;
+  string name = 2;
+  int32 age = 3;
+  string fileName = 4;
+}
+
+message FileSendRequest {
+  string fileName = 1;
+}
+
+message FileSendResponse {
+  bytes chunk = 1;
+  string fileName = 2;
+}
