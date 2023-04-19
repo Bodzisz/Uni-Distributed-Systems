@@ -17,19 +17,18 @@ public class PersonServiceImpl implements PersonService {
     private final PersonRepository personRepository = new PersonRepositoryImpl();
 
     @Override
-    public Person getPerson(@WebParam(name = "id") int id) throws PersonNotFoundException {
+    public Person getPerson(int id) throws PersonNotFoundException {
         System.out.println("...called getPerson id="+id);
         return personRepository.getPerson(id);
     }
 
     @Override
-    public Person addPerson(@WebParam(name = "id")int id, @WebParam(name = "name") String name,
-                            @WebParam(name = "age") int age) throws PersonExistException {
+    public Person addPerson(int id, String name, int age) throws PersonExistException {
         return personRepository.addPerson(id, name, age);
     }
 
     @Override
-    public boolean deletePerson(@WebParam(name = "id") int id) throws PersonNotFoundException {
+    public boolean deletePerson(int id) throws PersonNotFoundException {
         return personRepository.deletePerson(id);
     }
 

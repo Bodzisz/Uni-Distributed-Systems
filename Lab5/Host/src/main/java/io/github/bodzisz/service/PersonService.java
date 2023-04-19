@@ -3,6 +3,7 @@ package io.github.bodzisz.service;
 import io.github.bodzisz.exception.PersonExistException;
 import io.github.bodzisz.exception.PersonNotFoundException;
 import jakarta.jws.WebMethod;
+import jakarta.jws.WebParam;
 import jakarta.jws.WebService;
 import io.github.bodzisz.model.Person;
 
@@ -12,11 +13,12 @@ import java.util.List;
 public interface PersonService {
 
     @WebMethod
-    Person getPerson(int id) throws PersonNotFoundException;
+    Person getPerson(@WebParam(name = "id") int id) throws PersonNotFoundException;
     @WebMethod
-    Person addPerson(int id, String name, int age) throws PersonExistException;
+    Person addPerson(@WebParam(name = "id") int id, @WebParam(name = "name") String name,
+                     @WebParam(name = "age") int age) throws PersonExistException;
     @WebMethod
-    boolean deletePerson(int id) throws PersonNotFoundException;
+    boolean deletePerson(@WebParam(name = "id") int id) throws PersonNotFoundException;
     @WebMethod
     List<Person> getAllPersons();
     @WebMethod
