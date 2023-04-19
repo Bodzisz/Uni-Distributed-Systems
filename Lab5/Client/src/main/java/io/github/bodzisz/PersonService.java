@@ -103,4 +103,15 @@ public interface PersonService {
         throws PersonExistException_Exception
     ;
 
+    /**
+     * 
+     * @return
+     *     returns boolean
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "clearPersons", targetNamespace = "http://service.bodzisz.github.io/", className = "io.github.bodzisz.ClearPersons")
+    @ResponseWrapper(localName = "clearPersonsResponse", targetNamespace = "http://service.bodzisz.github.io/", className = "io.github.bodzisz.ClearPersonsResponse")
+    public boolean clearPersons();
+
 }

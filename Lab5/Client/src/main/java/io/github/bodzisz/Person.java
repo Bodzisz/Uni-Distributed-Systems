@@ -39,14 +39,6 @@ public class Person {
     protected String firstName;
     protected int id;
 
-    public Person() {}
-
-    public Person(final int id, final String firstName, final int age) {
-        this.id = id;
-        this.firstName = firstName;
-        this.age = age;
-    }
-
     /**
      * Gets the value of the age property.
      * 

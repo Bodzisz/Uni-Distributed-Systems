@@ -31,8 +31,6 @@ public class PersonNotFoundException_Exception
         this.faultInfo = faultInfo;
     }
 
-    public PersonNotFoundException_Exception() {}
-
     /**
      * 
      * @param cause

@@ -17,6 +17,8 @@
         <xs:element name="getAllPersonsResponse" type="tns:getAllPersonsResponse"/>
         <xs:element name="getPerson" type="tns:getPerson"/>
         <xs:element name="getPersonResponse" type="tns:getPersonResponse"/>
+        <xs:element name="clearPersons" type="tns:clearPersons"/>
+        <xs:element name="clearPersonsResponse" type="tns:clearPersonsResponse"/>
         <xs:complexType name="deletePerson">
             <xs:sequence>
                 <xs:element name="arg0" type="xs:int"/>
@@ -82,6 +84,14 @@
                 <xs:element name="message" type="xs:string" minOccurs="0"/>
             </xs:sequence>
         </xs:complexType>
+        <xs:complexType name="clearPersons">
+            <xs:sequence/>
+        </xs:complexType>
+        <xs:complexType name="clearPersonsResponse">
+            <xs:sequence>
+                <xs:element name="return" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
     </xs:schema>
     <message name="deletePerson">
         <part name="parameters" element="tns:deletePerson"/>
@@ -119,6 +129,12 @@
     <message name="PersonExistException">
         <part name="fault" element="tns:PersonExistException"/>
     </message>
+    <message name="clearPersons">
+        <part name="parameters" element="tns:clearPersons"/>
+    </message>
+    <message name="clearPersonsResponse">
+        <part name="parameters" element="tns:clearPersonsResponse"/>
+    </message>
     <portType name="PersonService">
         <operation name="deletePerson">
             <input message="tns:deletePerson"/>
@@ -142,6 +158,10 @@
             <input message="tns:addPerson"/>
             <output message="tns:addPersonResponse"/>
             <fault message="tns:PersonExistException" name="PersonExistException" />
+        </operation>
+        <operation name="clearPersons">
+            <input message="tns:clearPersons"/>
+            <output message="tns:clearPersonsResponse" />
         </operation>
     </portType>
     <binding name="PersonServiceImplPortBinding" type="tns:PersonService">
@@ -199,6 +219,15 @@
             <fault name="PersonExistException">
                 <soap:fault name="PersonExistException" use="literal"/>
             </fault>
+        </operation>
+        <operation name="clearPersons">
+            <soap:operation soapAction=""/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
         </operation>
     </binding>
     <service name="PersonService">

@@ -10,8 +10,17 @@ public class PersonRepositoryImpl2 implements PersonRepository2 {
 
     public PersonRepositoryImpl2() {
         this.personSet = new HashSet<>();
-        this.personSet.add(new Person(1, "Kacper", 21));
-        this.personSet.add(new Person(2, "Kubica", 42));
+        Person person1 = new Person();
+        person1.setAge(21);
+        person1.setId(1);
+        person1.setFirstName("Kacper");
+
+        Person person2 = new Person();
+        person2.setAge(21);
+        person2.setId(1);
+        person2.setFirstName("Kacper");
+        this.personSet.add(person1);
+        this.personSet.add(person2);
     }
 
     public List<Person> getAllPersons() {
@@ -22,7 +31,7 @@ public class PersonRepositoryImpl2 implements PersonRepository2 {
         return personSet.stream()
                 .filter(person -> person.getId() == id)
                 .findFirst()
-                .orElseThrow(PersonNotFoundException_Exception::new);
+                .orElseThrow(() -> new PersonNotFoundException_Exception("Not found", new PersonNotFoundException()));
     }
 
     public Person updatePerson(int id, String name, int age) throws PersonNotFoundException_Exception {
@@ -40,15 +49,22 @@ public class PersonRepositoryImpl2 implements PersonRepository2 {
 
     public Person addPerson(int id, String name, int age) throws PersonExistException_Exception {
         if(this.personSet.stream().anyMatch(person -> person.getId() == id)) {
-            throw new PersonExistException_Exception();
+            throw new PersonExistException_Exception("Person exists", new PersonExistException());
         }
 
-        Person person = new Person(id, name, age);
+        Person person = new Person();
+        person.setAge(age);
+        person.setId(id);
+        person.setFirstName(name);
         this.personSet.add(person);
         return person;
     }
 
-
+    @Override
+    public boolean clearPersons() {
+        this.personSet.clear();
+        return true;
+    }
 
     public int countPersons() {
         return this.personSet.size();

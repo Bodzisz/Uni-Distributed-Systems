@@ -36,6 +36,8 @@ public class ObjectFactory {
     private static final QName _GetAllPersonsResponse_QNAME = new QName("http://service.bodzisz.github.io/", "getAllPersonsResponse");
     private static final QName _GetPerson_QNAME = new QName("http://service.bodzisz.github.io/", "getPerson");
     private static final QName _GetPersonResponse_QNAME = new QName("http://service.bodzisz.github.io/", "getPersonResponse");
+    private static final QName _ClearPersons_QNAME = new QName("http://service.bodzisz.github.io/", "clearPersons");
+    private static final QName _ClearPersonsResponse_QNAME = new QName("http://service.bodzisz.github.io/", "clearPersonsResponse");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: io.github.bodzisz
@@ -162,6 +164,26 @@ public class ObjectFactory {
      */
     public GetPersonResponse createGetPersonResponse() {
         return new GetPersonResponse();
+    }
+
+    /**
+     * Create an instance of {@link ClearPersons }
+     * 
+     * @return
+     *     the new instance of {@link ClearPersons }
+     */
+    public ClearPersons createClearPersons() {
+        return new ClearPersons();
+    }
+
+    /**
+     * Create an instance of {@link ClearPersonsResponse }
+     * 
+     * @return
+     *     the new instance of {@link ClearPersonsResponse }
+     */
+    public ClearPersonsResponse createClearPersonsResponse() {
+        return new ClearPersonsResponse();
     }
 
     /**
@@ -328,6 +350,32 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://service.bodzisz.github.io/", name = "getPersonResponse")
     public JAXBElement<GetPersonResponse> createGetPersonResponse(GetPersonResponse value) {
         return new JAXBElement<>(_GetPersonResponse_QNAME, GetPersonResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ClearPersons }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link ClearPersons }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://service.bodzisz.github.io/", name = "clearPersons")
+    public JAXBElement<ClearPersons> createClearPersons(ClearPersons value) {
+        return new JAXBElement<>(_ClearPersons_QNAME, ClearPersons.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ClearPersonsResponse }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link ClearPersonsResponse }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://service.bodzisz.github.io/", name = "clearPersonsResponse")
+    public JAXBElement<ClearPersonsResponse> createClearPersonsResponse(ClearPersonsResponse value) {
+        return new JAXBElement<>(_ClearPersonsResponse_QNAME, ClearPersonsResponse.class, null, value);
     }
 
 }

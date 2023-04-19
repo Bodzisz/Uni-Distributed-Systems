@@ -1,5 +1,6 @@
 package io.github.bodzisz.service;
 
+import io.github.bodzisz.exception.FullListException;
 import io.github.bodzisz.exception.PersonExistException;
 import io.github.bodzisz.exception.PersonNotFoundException;
 import io.github.bodzisz.model.Person;
@@ -15,6 +16,7 @@ import java.util.List;
 public class PersonServiceImpl implements PersonService {
 
     private final PersonRepository personRepository = new PersonRepositoryImpl();
+    private static final int MAX_SIZE = 4;
 
     @Override
     public Person getPerson(int id) throws PersonNotFoundException {
@@ -23,7 +25,10 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Person addPerson(int id, String name, int age) throws PersonExistException {
+    public Person addPerson(int id, String name, int age) throws PersonExistException, FullListException {
+        if(personRepository.countPersons() == MAX_SIZE) {
+            throw new FullListException();
+        }
         return personRepository.addPerson(id, name, age);
     }
 
@@ -41,5 +46,13 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public int countPersons() {
         return personRepository.countPersons();
+    }
+
+    @Override
+    public boolean updatePerson(int id, String name, int age) throws PersonNotFoundException {
+        Person person = getPerson(id);
+        person.setFirstName(name);
+        person.setAge(age);
+        return true;
     }
 }

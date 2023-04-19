@@ -37,4 +37,9 @@ public class PersonServiceImpl2 implements PersonService {
     public int countPersons() {
         return personRepository.countPersons();
     }
+
+    @Override
+    public boolean clearPersons() {
+        return this.personRepository.clearPersons();
+    }
 }

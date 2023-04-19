@@ -31,8 +31,6 @@ public class PersonExistException_Exception
         this.faultInfo = faultInfo;
     }
 
-    public PersonExistException_Exception() {}
-
     /**
      * 
      * @param cause

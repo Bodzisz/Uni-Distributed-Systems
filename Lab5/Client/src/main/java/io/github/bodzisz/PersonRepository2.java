@@ -9,4 +9,6 @@ public interface PersonRepository2 {
     boolean deletePerson(int id) throws PersonNotFoundException_Exception;
     Person addPerson(int id, String name, int age) throws PersonExistException_Exception;
     int countPersons();
+
+    boolean clearPersons();
 }
