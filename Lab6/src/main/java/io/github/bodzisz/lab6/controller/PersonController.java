@@ -6,14 +6,11 @@ import io.github.bodzisz.lab6.exception.PersonNotFoundException;
 import io.github.bodzisz.lab6.model.Person;
 import io.github.bodzisz.lab6.repository.PersonRepository;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -25,46 +22,82 @@ public class PersonController {
 
     final PersonRepository personRepository;
 
-    public PersonController(PersonRepository personRepository) {
+    public PersonController(final PersonRepository personRepository) {
         this.personRepository = personRepository;
     }
 
     @GetMapping
-    final CollectionModel<EntityModel<Person>> getAllPeople() throws PersonNotFoundException {
+    public ResponseEntity<CollectionModel<Person>> getAllPeople() throws PersonNotFoundException {
         final List<Person> personList = personRepository.getAllPersons();
 
-        final List<EntityModel<Person>> modelList = new ArrayList<>();
         for (Person person : personList) {
-            EntityModel<Person> of = EntityModel.of(person,
+            if(!person.hasLinks()) {
+                person.add(
+                        linkTo(methodOn(PersonController.class).getPerson(person.getId())).withSelfRel(),
+                        linkTo(methodOn(PersonController.class).deletePerson(person.getId())).withRel("delete"),
+                        linkTo(methodOn(PersonController.class).getAllPeople()).withRel("list all")
+                );
+            }
+        }
+
+        final Link link = linkTo(methodOn(PersonController.class).getAllPeople()).withSelfRel();
+        return ResponseEntity.ok(CollectionModel.of(personList, link));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Person> getPerson(@PathVariable final int id) throws PersonNotFoundException {
+        final Person person = personRepository.getPerson(id);
+
+        if(!person.hasLinks()) {
+            person.add(
                     linkTo(methodOn(PersonController.class).getPerson(person.getId())).withSelfRel(),
                     linkTo(methodOn(PersonController.class).deletePerson(person.getId())).withRel("delete"),
                     linkTo(methodOn(PersonController.class).getAllPeople()).withRel("list all")
             );
-            modelList.add(of);
         }
 
-        return CollectionModel.of(modelList, linkTo(methodOn(PersonController.class).getAllPeople()).withSelfRel());
-    }
-
-    @GetMapping("/{id}")
-    final ResponseEntity<Person> getPerson(@PathVariable final int id) throws PersonNotFoundException {
-        return ResponseEntity.ok(personRepository.getPerson(id));
+        return ResponseEntity.ok(person);
     }
 
     @PostMapping
-    final ResponseEntity<Person> addPerson(@RequestBody final Person person) throws PersonExistException, FullListException {
+    public ResponseEntity<Person> addPerson(@RequestBody final Person person) throws PersonExistException, FullListException, PersonNotFoundException {
         final Person personToReturn = personRepository.addPerson(person);
+
+        if(!personToReturn.hasLinks()) {
+            personToReturn.add(
+                    linkTo(methodOn(PersonController.class).getPerson(personToReturn.getId())).withSelfRel(),
+                    linkTo(methodOn(PersonController.class).deletePerson(personToReturn.getId())).withRel("delete"),
+                    linkTo(methodOn(PersonController.class).getAllPeople()).withRel("list all")
+            );
+        }
         return ResponseEntity.ok(personToReturn);
     }
 
     @DeleteMapping("/{id}")
-    final ResponseEntity<Person> deletePerson(@PathVariable final int id) throws PersonNotFoundException {
+    public ResponseEntity<Person> deletePerson(@PathVariable final int id) throws PersonNotFoundException {
         final Person personToReturn = personRepository.deletePerson(id);
+        if(!personToReturn.hasLinks()) {
+            personToReturn.add(
+                    linkTo(methodOn(PersonController.class).getPerson(personToReturn.getId())).withSelfRel(),
+                    linkTo(methodOn(PersonController.class).deletePerson(personToReturn.getId())).withRel("delete"),
+                    linkTo(methodOn(PersonController.class).getAllPeople()).withRel("list all")
+            );
+        }
+
         return ResponseEntity.ok(personToReturn);
     }
 
     @PutMapping
-    final ResponseEntity<Person> updatePerson(@RequestBody final Person person) throws PersonNotFoundException {
-        return ResponseEntity.ok(personRepository.updatePerson(person));
+    public ResponseEntity<Person> updatePerson(@RequestBody final Person person) throws PersonNotFoundException {
+        final Person personToReturn = personRepository.updatePerson(person);
+        if(!personToReturn.hasLinks()) {
+            personToReturn.add(
+                    linkTo(methodOn(PersonController.class).getPerson(personToReturn.getId())).withSelfRel(),
+                    linkTo(methodOn(PersonController.class).deletePerson(personToReturn.getId())).withRel("delete"),
+                    linkTo(methodOn(PersonController.class).getAllPeople()).withRel("list all")
+            );
+        }
+
+        return ResponseEntity.ok(personToReturn);
     }
 }

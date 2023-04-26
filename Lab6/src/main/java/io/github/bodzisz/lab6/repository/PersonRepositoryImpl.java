@@ -5,7 +5,6 @@ import io.github.bodzisz.lab6.exception.PersonExistException;
 import io.github.bodzisz.lab6.exception.PersonNotFoundException;
 import io.github.bodzisz.lab6.model.Person;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -15,11 +14,10 @@ import java.util.Set;
 @Component
 public class PersonRepositoryImpl implements PersonRepository {
 
-    private final Set<Person> personSet;
+    private final Set<Person> personSet = new HashSet<>();
     private static final int MAX_SIZE = 4;
 
     public PersonRepositoryImpl() {
-        this.personSet = new HashSet<>();
         Person person1 = new Person(1, "Kacper", 21);
         Person person2 = new Person(2, "Jurek", 35);
 

@@ -4,9 +4,11 @@ import io.github.bodzisz.lab6.exception.FullListException;
 import io.github.bodzisz.lab6.exception.PersonExistException;
 import io.github.bodzisz.lab6.exception.PersonNotFoundException;
 import io.github.bodzisz.lab6.model.Person;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface PersonRepository {
 
     List<Person> getAllPersons();
